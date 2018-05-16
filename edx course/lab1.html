@@ -1,0 +1,101 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <style>
+        body {
+            font-family: Verdana;
+        }
+
+        h1, h2, h3 {
+            color: darkblue;
+        }
+
+        .rating-circle {
+            height: 2em;
+            width: 2em;
+            border: .1em solid black;
+            border-radius: 1.1em;
+            display: inline-block;
+            margin: 0;
+            padding: .1em;
+        }
+
+        .rating-hover {
+            background-color: yellow;
+        }
+
+        .rating-chosen {
+            background-color: green;
+        }
+    </style>
+</head>
+<body>
+<h1>Contoso Web Developer Conference</h1>
+<h2>Finding elements using jQuery</h2>
+<div>This session is about identifying elements using jQuery methods and selectors.</div>
+<h3>Rate this session</h3>
+<div id="rating-container">
+    <div class="rating-circle"></div>
+    <div class="rating-circle"></div>
+    <div class="rating-circle"></div>
+    <div class="rating-circle"></div>
+    <div class="rating-circle"></div>
+</div>
+
+<script src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-2.1.4.min.js"></script>
+
+<script>
+$(function () {
+
+// solution 1
+
+//        const circles = $('.rating-circle');
+//        let selectedCircle = '';
+//
+//        circles.hover(
+//            //HandlerIn
+//            function () {
+//                circles.removeClass('rating-chosen');
+//                $(this).addClass('rating-hover').prevAll().addClass('rating-hover');
+//            },
+//            //HandlerOut
+//            function () {
+//                $(this).removeClass('rating-hover').prevAll().removeClass('rating-hover');
+//                checkChosen();
+//            });
+//
+//        circles.click(function () {
+//            selectedCircle = $(this);
+//            checkChosen();
+//        });
+//
+//        //add rating-chosen class
+//        function checkChosen() {
+//            if (selectedCircle) {
+//                selectedCircle.addClass('rating-chosen').prevAll().addClass('rating-chosen');
+//            }
+//        }
+
+//solution 2
+
+    const circles = $('.rating-circle');
+
+    circles.hover(function () {
+        $(this).addClass("rating-hover").prevAll().addClass("rating-hover");
+        $(value).removeClass("rating-chosen").prevAll().removeClass("rating-chosen");
+    }, function () {
+        $(this).removeClass("rating-hover").prevAll().removeClass("rating-hover");
+        $(value).addClass("rating-chosen").prevAll().addClass("rating-chosen");
+    });
+
+    circles.click(function () {
+        value = $(this);
+        $(this).addClass("rating-chosen").prevAll().addClass("rating-chosen");
+    });
+
+});
+
+
+</script>
+</body>
+</html>

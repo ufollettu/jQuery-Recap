@@ -1,0 +1,14 @@
+.box {
+    width: 400px;
+    background-color: red;
+    padding: 2em;
+    position: relative;
+    -webkit-transition: border-radius 1s;
+    -moz-transition: border-radius 1s;
+    -o-transition: border-radius 1s;
+    transition: border-radius 1s;
+}
+
+.rounded {
+    border-radius: 50px;
+}

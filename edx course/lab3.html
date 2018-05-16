@@ -1,0 +1,193 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <style>
+        body {
+            font-family: Verdana;
+        }
+
+        h1, h2, h3 {
+            color: darkblue;
+        }
+
+        .rating-circle {
+            height: 2em;
+            width: 2em;
+            border: .1em solid black;
+            border-radius: 1.1em;
+            display: inline-block;
+            margin: 0;
+            padding: .1em;
+        }
+
+        .rating-hover {
+            background-color: yellow;
+        }
+
+        .rating-chosen {
+            background-color: green;
+        }
+    </style>
+</head>
+<body>
+<h1>Contoso Web Developer Conference</h1>
+<h2>Finding elements using jQuery</h2>
+<div>This session is about identifying elements using jQuery methods and selectors.</div>
+<h3>Rate this session</h3>
+<div id="rating-container" max-value="5"></div>
+
+<div>
+    <label for="max-value">Enter max value:</label>
+    <input type="text" id="max-value"/>
+    <button type="button" id="update-max-value">Update max value</button>
+</div>
+<div>
+    <button type="button" id="save-rating">Save Rating</button>
+</div>
+<div id="output"></div>
+
+
+<script src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-2.1.4.min.js"></script>
+
+<script>
+    // solution 1
+    //
+    //    $(function () {
+    //
+    //        // variables
+    //        const container = $('#rating-container');
+    //        const updateButton = $('#update-max-value');
+    //        const saveButton = $('#save-rating');
+    //        const outputDiv = $('#output');
+    //        const div = '<div class="rating-circle"></div>';
+    //        const circles = '.rating-circle';
+    //        const url = 'http://jquery-edx.azurewebsites.net/api/Rating';
+    //        let maxValue = container.attr('max-value');
+    //        let userValue = '';
+    //        let selectedCircle = '';
+    //
+    //        // create default circles divs
+    //        appendDivs();
+    //
+    //        // send rating to the server
+    //        saveButton.on('click', function () {
+    //            let ratingData = {value: userValue, maxValue: maxValue};
+    //            $.post(url, ratingData, function (data) {
+    //                outputDiv.text(data.message);
+    //            }).done(function () {
+    //                userValue = 0;
+    //            });
+    //        });
+    //
+    //        // create base divs
+    //        updateButton.on('click', function () {
+    //            maxValue = $('#max-value').val();
+    //            container.attr('max-value', maxValue).empty();
+    //            appendDivs(maxValue);
+    //        });
+    //
+    //        // rating circles animation
+    //        container.on('mouseenter', circles, function () {
+    //            $(this).addClass("rating-hover").prevAll().addClass("rating-hover");
+    //            $(selectedCircle).removeClass("rating-chosen").prevAll().removeClass("rating-chosen");
+    //        });
+    //
+    //        container.on('mouseleave', circles, function () {
+    //            $(this).removeClass("rating-hover").prevAll().removeClass("rating-hover");
+    //            checkSelected();
+    //        });
+    //
+    //        container.on('click', circles, function () {
+    //            selectedCircle = $(this);
+    //            checkSelected();
+    //        });
+    //
+    //        // functions
+    //
+    //        // check selected circles
+    //        function checkSelected() {
+    //            $(selectedCircle).addClass("rating-chosen").prevAll().addClass("rating-chosen");
+    //            userValue = $('.rating-chosen').length;
+    //        }
+    //
+    //        // create circles divs
+    //        function appendDivs(newValue) {
+    //            let divValue = newValue || 5;
+    //            for (let i = 0; i < divValue; i++) {
+    //                container.append(div);
+    //            }
+    //        }
+    //    });
+
+
+    $(document).ready(function () {
+        var maxValue = $('#rating-container').attr('max-value');
+        paint(maxValue);
+
+        $('#update-max-value').click(function () {
+//var maxValue = $('#rating-container').attr('max-value');
+            var newMaxValue = $('#max-value').val();
+            paint(newMaxValue);
+        })
+
+        function paint(maxValue) {
+            var myindex;
+            $('#rating-container').empty();
+            for (i = 0; i < maxValue; i++) {
+                $('#rating-container').append('');
+            }
+//CODIGO LAB1
+            $('.rating-circle').on("mouseover", function (event) {
+                myindex = $(this).index();
+                var indexTag = $('.rating-circle').get(myindex);
+
+                $(this).addClass('rating-hover');
+                $(indexTag).prevAll(myindex).addClass('rating-hover');
+            })
+            $('.rating-circle').on("mouseout", function (event) {
+                myindex = $(this).index();
+                var indexTag = $('.rating-circle').get(myindex);
+                $(this).removeClass('rating-hover');
+                $(indexTag).prevAll(myindex).removeClass('rating-hover');
+            })
+            $('.rating-circle').click(function (event) {
+                myindex = $(this).index();
+                var indexTag = $('.rating-circle').get(myindex);
+
+                $(this).removeClass('rating-chosen');
+                $(indexTag).nextAll(myindex).removeClass('rating-chosen');
+
+                $(this).addClass('rating-chosen');
+                $(indexTag).prevAll(myindex).addClass('rating-chosen');
+            })
+// CODIGO
+            $('#save-rating').click(function () {
+                var url = 'http://jquery-edx.azurewebsites.net/api/Rating';
+                var data = {value: myindex + 1, maxValue: maxValue};
+                $.post(url, data, function (data) {
+                    var parsedJson = JSON.stringify(data.message);
+                    $('#output').text(parsedJson);
+                })
+            })
+//        // send rating to the server
+//        saveButton.on('click', function () {
+//            let ratingData = {value: userValue, maxValue: maxValue};
+//            $.post(url, ratingData, function (data) {
+//                outputDiv.text(data.message);
+//            }).done(function () {
+//                userValue = 0;
+//            });
+//        });
+        }
+    });
+
+    var emptyArray = []; // but I need this array takes only 10 elements
+    var arrLenght = 10;
+    for (var i = 0; i < arrLenght; i++) {
+        emptyArray.push(i);
+    }
+    console.log(emptyArray.length); // I want to see 10
+    console.log(emptyArray) // [0,1,2,3,4,5,6,7,8,9]
+</script>
+</body>
+</html>
